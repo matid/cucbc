@@ -7,17 +7,23 @@ module CUCBC
     attr_accessor :notifiers, :flag
 
     def initialize
-      notifiers = [Notifier::Screen, Notifier::Twitter]
-      if Flag.changed?
+      self.notifiers = [Notifier::Screen, Notifier::Twitter]
+      self.flag = Flag.new
+    end
+    
+    def loop
+      if flag.changed?
         notifiers.each do |notifier|
-          notifier.update("The flag is #{Flag.status}.")
+          notifier.update("The flag is #{flag.status}.")
         end
       end
     end
   end
 end
 
+cucbc = CUCBC::Base.new
+
 loop do
-  CUCBC::Base.new
+  cucbc.loop
   sleep 5 * 60
 end

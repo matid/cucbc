@@ -1,25 +1,31 @@
 require "open-uri"
 require "hpricot"
+require "active_support/core_ext"
 
 module CUCBC
   class Flag
-    def self.status
-      self.fetch
+    def initialize
+      @status = fetch or raise "Could not initialise Flag status from CUCBC"
     end
     
-    def self.changed?
-      self.cached != self.status
+    def status
+      @status = fetch || @status
+    end
+    
+    def changed?
+      cached != status
     end
     
   private
   
-    def self.cached
-      @cached || self.status
+    def cached
+      @status
     end
   
-    def self.fetch
+    def fetch
       document = open("http://m.cucbc.org/"){ |f| Hpricot f }
-      @cached = (document/"card#status/p/strong/").first.to_s.downcase.to_sym
+      (document/"card#status/p/strong/").first.to_s.downcase.presence
+    rescue StandardError
     end
   end
 end

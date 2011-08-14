@@ -1,6 +1,7 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    activesupport (3.0.9)
     crack (0.1.8)
     hashie (0.4.0)
     heroku (2.3.6)
@@ -10,6 +11,7 @@ GEM
     hpricot (0.8.2)
     httparty (0.6.1)
       crack (= 0.1.8)
+    i18n (0.6.0)
     launchy (2.0.3)
     mime-types (1.16)
     multi_json (0.0.4)
@@ -27,6 +29,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activesupport (~> 3.0.9)
   heroku
   hpricot
+  i18n
   twitter
