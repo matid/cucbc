@@ -2,15 +2,12 @@ module CUCBC
   module Notifier
     class Twitter < Base
       def self.connect
-        config = {"consumer_token" => ENV["CONSUMER_TOKEN"],
-                  "consumer_secret" => ENV["CONSUMER_SECRET"],
-                  "oauth_token" => ENV["OAUTH_TOKEN"],
-                  "oauth_token_secret" => ENV["OAUTH_TOKEN_SECRET"]}
-
-        oauth = ::Twitter::OAuth.new(config["consumer_token"], config["consumer_secret"])
-        oauth.authorize_from_access(config["oauth_token"], config["oauth_token_secret"])
-
-        @client = ::Twitter::Base.new(oauth)
+        @client = ::Twitter::REST::Client.new do |config|
+          config.consumer_key = ENV["CONSUMER_TOKEN"]
+          config.consumer_secret = ENV["CONSUMER_SECRET"]
+          config.access_token = ENV["OAUTH_TOKEN"]
+          config.access_token_secret = ENV["OAUTH_TOKEN_SECRET"]
+        end
       end
 
       def self.update(message)
